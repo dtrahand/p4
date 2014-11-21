@@ -1,0 +1,33 @@
+h1 {
+    color: #00BFFF;  /* light blue */
+    font-family: Helvetica ,Arial,sans-serif;
+    font-size: 30px;
+/*    text-align: center;*/
+    font-weight: bold;
+}
+
+body {
+    width: 90%;
+    padding-left: 5%;
+    font-family: Helvetica ,Arial,sans-serif;
+    font-size: medium;
+}
+
+/* Overwrite the bootstrap dropdown menu which was set to 100% and takine the entire cell width:*/
+.form-control {
+    width: auto;
+}
+
+
+a:link {color: blue;}
+a:visited {color: lightgreen;}
+a:hover {border: thin solid white; background-color: yellow; color: blue;}
+
+		.welcome {
+			width: 300px;
+			height: 200px;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			margin-left: -150px;
+			margin-top: -100px;

@@ -3,7 +3,6 @@
 <head>
     <title>P4</title>
     <meta charset="utf-8">
-    <link rel='stylesheet' href='./css/DwaP4.css' type='text/css'>  
 <style>
 </style>
 </head>
