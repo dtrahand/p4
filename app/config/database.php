@@ -57,7 +57,7 @@ return array(
 			'host'      => 'localhost',
 			'database'  => 'musicians',
 			'username'  => 'root',
-			'password'  => '',
+			'password'  => 'gYkYVvkD3p',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
