@@ -6,41 +6,33 @@
 	<meta charset='utf-8'>
 
 	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/flatly/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 	<link rel='stylesheet' href='/css/style.css' type='text/css'>
-
-	@yield('head')
-
-
 </head>
+
 <body>
+    <!-- HEADER OF PAGE - which is different if user is teacher or student: -->
+    @if(Auth::check())
+        <a href='/logout'>Log out {{ Auth::user()->email }}</a>
+        @if (Auth::user()->Teacher == TRUE)   <!-- User is a TEACHER:-->
+            <?php include("../app/views/HeaderTeacher.php") ?>
+        @else <!-- User is a STUDENT:-->
+            <?php include("../app/views/HeaderStudent.php") ?>
+        @endif
+    @else <!-- User is not signed in:-->
+            <?php include("../app/views/HeaderUnknown.php") ?>
+    @endif
 
-	@if(Session::get('flash_message'))
-		<div class='flash-message'>{{ Session::get('flash_message') }}</div>
+    <!-- Format the way Flash messages are displayed: -->
+    @if(Session::get('flash_message'))
+		<div class='flash-message'> {{ Session::get('flash_message') }}</div>
 	@endif
-
-	<nav>
-		<ul>
-		@if(Auth::check())
-			<a href='/logout'>Log out {{ Auth::user()->email }}</a>
-            @if (Auth::user()->Teacher == TRUE)
-            <!-- User is a TEACHER:-->
-                <a href='/book'>Manage list of Students</a>
-                <a href='/book/create'>Manager my available days and time</a>
-                <a href='/book/create'>View entire schedule</a>
-            @else
-            <!-- User is a STUDENT:-->
-                <a href='/book/create'>Manager my available days and time</a>
-		    @endif
-
-		@else
-New user: <a href='/signup'>Sign up</a> or Already have an account: <a href='/login'>Log in</a>
-		@endif
-		</ul>
-	</nav>
-
+    
 	@yield('content')
 
-	@yield('/body')
+	@yield('body')
 
 </body>
 </html>

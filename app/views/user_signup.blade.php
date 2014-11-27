@@ -1,11 +1,11 @@
 @extends('_master')
 
 @section('title')
-	Sign up
+	Create account
 @stop
 
 @section('content')
-<h1>Sign up</h1>
+<h1>Create a new account</h1>
 To create an account, please fill in all the fields.
 
 @foreach($errors->all() as $message)

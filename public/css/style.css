@@ -18,16 +18,26 @@ body {
     width: auto;
 }
 
+/*a:link {color: blue;}*/
+/*a:visited {color: lightgreen;}*/
+a:hover {background-color: #00BFFF; color: darkorange;}
 
-a:link {color: blue;}
-a:visited {color: lightgreen;}
-a:hover {border: thin solid white; background-color: yellow; color: blue;}
-
-		.welcome {
-			width: 300px;
-			height: 200px;
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			margin-left: -150px;
-			margin-top: -100px;
+.welcome {
+    width: 300px;
+    height: 200px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -150px;
+    margin-top: -100px;
+}
+.flash-message {
+	width:80%;
+    margin-left: 20%;
+	position:absolute;
+	top:150;
+	left:0;
+	background-color:yellow;
+	text-align:center;
+	padding:5px;
+}

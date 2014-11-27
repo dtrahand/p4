@@ -1,27 +1,24 @@
 <?php
+
 class UserController extends BaseController {
 	/**
 	*
 	*/
 	public function __construct() {
-        $this->beforeFilter('guest', array('only' => array('getLogin','getSignup')));
+    
+//    The following is saying "Do not let user go to Login or Signup pages if the user is already signed up"
+    $this->beforeFilter('guest', array('only' => array('getLogin','getSignup')));
     }
+
     /**
-	* Show the new user signup form
+	* Show the new user SIGNUP form
 	* @return View
 	*/
 	public function getSignup() {
-        if (Auth::check()) {
-            // The user is logged in...
-            return Redirect::intended('/signup')->with('flash_message', 'You are already signed in. Please Log out first');
-//            return Redirect::to('/signup')
-//            <a href='/logout'>Log out first</a>
-        }
-        else {
-		      return View::make('signup');
-        }
+		return View::make('user_signup');
 	}
-	/**
+    
+    /**
 	* Process the new user signup
 	* @return Redirect
 	*/
@@ -54,22 +51,22 @@ class UserController extends BaseController {
 		}
 		catch (Exception $e) {
 			return Redirect::to('/signup')
-				->with('flash_message', 'Sign up failed; please try again.')
-				->withInput();
+				->with('flash_message', 'Sign up failed; please try again.');
 		}
 		# Log in
 		Auth::login($user);
-		return Redirect::to('/')->with('flash_message', 'Welcome to Foobooks!');
+		return Redirect::to('/')->with('flash_message', 'Welcome Musician!');
 	}
+    
 	/**
-	* Display the login form
+	* Display the GET LOGIN form
 	* @return View
 	*/
 	public function getLogin() {
-		return View::make('login');
+		return View::make('user_login');
 	}
 	/**
-	* Process the login form
+	* Process the POST LOGIN form
 	* @return View
 	*/
 	public function postLogin() {
@@ -82,8 +79,9 @@ class UserController extends BaseController {
 				->with('flash_message', 'Log in failed; please try again.')
 				->withInput();
 		}
-		return Redirect::to('login');
+		return Redirect::to('/');
 	}
+    
 	/**
 	* Logout
 	* @return Redirect
@@ -92,6 +90,18 @@ class UserController extends BaseController {
 		# Log out
 		Auth::logout();
 		# Send them to the homepage
-		return Redirect::to('/login');
+		return Redirect::to('/');
 	}
+
+    # View list of students
+	public function getListstudents() {
+        $liststudents= User::where('teacher','=','0')
+            ->get(array('firstname', 'lastname'));
+
+        return View::make('user_liststudents')
+            ->with('liststudents', $liststudents);
+
+	}
+    
+    
 }

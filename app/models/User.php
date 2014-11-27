@@ -6,6 +6,9 @@ use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
 class User extends Eloquent implements UserInterface, RemindableInterface {
+    public function time(){
+        return $this->belongsTo('Time');
+    }
 
 	use UserTrait, RemindableTrait;
 
