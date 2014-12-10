@@ -1,26 +1,52 @@
 h1 {
     color: #00BFFF;  /* light blue */
     font-family: Helvetica ,Arial,sans-serif;
-    font-size: 30px;
+    font-size: 25px;
 /*    text-align: center;*/
     font-weight: bold;
 }
-
+h2 {
+    color: #00BFFF;  /* light blue */
+    font-family: Helvetica ,Arial,sans-serif;
+    font-size: 19px;
+    font-weight: bold;
+}
 body {
     width: 90%;
     padding-left: 5%;
     font-family: Helvetica ,Arial,sans-serif;
-    font-size: medium;
+    font-size: smqll;
 }
 
 /* Overwrite the bootstrap dropdown menu which was set to 100% and takine the entire cell width:*/
 .form-control {
     width: auto;
 }
+table {
+    text-align: center;
+    border-spacing: 5px;
+    width:70%;
+    align:center;
+    cellspacing: 55px;
+    border-spacing: 10px;
+    border-collapse: separate;
+}
 
 /*a:link {color: blue;}*/
 /*a:visited {color: lightgreen;}*/
-a:hover {background-color: #00BFFF; color: darkorange;}
+a:hover {
+    background-color: #00BFFF; color: darkorange;
+}
+
+td.box {
+    color: #00BFFF; /* light blue */
+    border: solid;
+    border-width: 2px;
+    border-color: #00BFFF;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 5 5px;
+}
 
 .welcome {
     width: 300px;
@@ -31,12 +57,9 @@ a:hover {background-color: #00BFFF; color: darkorange;}
     margin-left: -150px;
     margin-top: -100px;
 }
+
 .flash-message {
-	width:80%;
-    margin-left: 20%;
-	position:absolute;
-	top:150;
-	left:0;
+    color: red;
 	background-color:yellow;
 	text-align:center;
 	padding:5px;

@@ -31,13 +31,34 @@ class TimeController extends \BaseController {
 	 * @return Response
 	 */
 	public function create()
-	{
-         // User checked in is a STUDENT
+	{        
+        // Request common to both TEACHER + STUDENT
+        // ****************************************
+        // Fetch Days&Hours when User is available:
+        // ------------------------------------------
+        try {
+            $usertimes = Time::where('user_id','=', Auth::user()->id)
+            ->get();
+        }
+        catch(exception $e) {
+            return Redirect::intended()
+                ->with('flash_message', $e->getMessage());
+        }
+        
+         // User checked in is a TEACHER
          // ****************************
-        if (Auth::user()->Teacher == 0) {
-            // Fetch Name of Teacher:
-            // ----------------------
+        if (Auth::user()->Teacher == 1) {
+            return View::make('time_create')
+                ->with('usertimes', $usertimes);
+            
+        }
+        else // User checked in is a STUDENT
+        {    // ****************************
+            
+            // Fetch Name of Student's  Teacher:
+            // ---------------------------------
             try {
+                // For now there is only one teacher...
                 $teacherinfos = User::where('teacher','=','1')
                 ->get(array('id', 'firstname', 'lastname'));
             }
@@ -47,56 +68,47 @@ class TimeController extends \BaseController {
                   ->with('flash_message', $errormessage);
 //                    ->with('flash_message', "Error fetching teacherinfo");
             }
-            
-            // Fetch Days&Hours when Sudent is available:
+            // For now there is only one teacher...
+            foreach($teacherinfos as $teacherinfo) {
+                $teacherID = $teacherinfo->id;
+            }
+            // Fetch available days and times of Teacher:
             // ------------------------------------------
             try {
-                $studenttimes = Time::where('user_id','=', Auth::user()->id)
+            $teachertimes = Time::where('user_id','=', $teacherID)
                 ->get();
             }
             catch(exception $e) {
+                $errormessage = "Teacher schedule not found:<br>" . $e->getMessage();
                 return Redirect::intended()
-                    ->with('flash_message', $e->getMessage());
-            }
+                    ->with('teacherinfos', $teacherinfos)
+                    ->with('flash_message', $errormessage);
+            //      ->with('flash_message', 'Teacher schedule not found');
+		  }
 
-        }
-         // User checked in is a TEACHER
-         // ****************************
-        else {
-            $teacherinfos = Auth::user(); 
-            $studenttimes="studenttimes is empty bc I am a teacher";
-        }
+            // Store the Teacher id for later
+            Session::put('teacherID', $teacherID);
 
-        // Request common to both TEACHER + STUDENT
-        // ****************************************
-		try {
-            $teachertimes = Time::where('user_id','=', '1')
-                ->get();
-		}
-		catch(exception $e) {
-            $errormessage = "Teacher schedule not found:<br>" . $e->getMessage();
-            return Redirect::intended()
-                ->with('teacherinfos', $teacherinfos)
-                ->with('flash_message', $errormessage);
-//                ->with('flash_message', 'Teacher schedule not found');
-		}
-        
             return View::make('time_create')
                 ->with('teacherinfos', $teacherinfos)
-                ->with('studenttimes', $studenttimes)
+                ->with('usertimes', $usertimes)
                 ->with('teachertimes', $teachertimes);
+        }
        }
 
 	/**
 	 * Store a newly created resource in storage.
 	 * @return Response POST create
 	 */
-	public function store()
+	public function store($id = null)
 	{
+
+
 		# Step 1) Define the rules
 		$rules = array(
-			'MondayStart' => 'required', # Must be >= teacher s start time
-			'MondayEnd' => 'required',  #Must be <= teacher s start time AND Must be greater than MondayStart
+			'Day' => 'required',
+			'Start' => 'required', # Must be >= teacher s start time
+			'End' => 'required',  #Must be <= teacher s start time AND Must be greater than Start
 		);
 
 		# Step 2
@@ -109,28 +121,59 @@ class TimeController extends \BaseController {
 				->withInput()
 				->withErrors($validator);
 		}
-
+        // CUSTOM VALIDATIONS:
+        // *******************
         // Check that the Start time is prior to End time:
-        if (Input::get('MondayStart') >= Input::get('MondayEnd')) {
+        if (Input::get('Start') >= Input::get('End')) {
             $customRules = "<br>Start time must be before End time.<br>";
-//            return Redirect::to('/time/create')
             return Redirect::to('/time/create')
 				->with('flash_message', 'Entering available times failed; please fix the errors listed below.')
 				->withInput()
 				->withErrors($customRules);
         }
+            
+        // Check that the student's hours are within the teachers' range of available time:
+        if (Auth::user()->Teacher == 0) {
+//            $teachertimes = Session::get('teachertimes');
+            
+            $Timecheck = Time::checkhours(Input::get('Day'), Input::get('Start'), Input::get('End'));
+                
+            if ($Timecheck == 0) {
+                return Redirect::to('/time/create')
+                ->withInput()
+                ->with('flash_message', "Your hours do not match your teacher's hours. Please try again");
+            }
+        }
 
 		$time = new Time;
 		$time->user_id = Auth::user()->id;
-		$time->teacher_id = 1;
-//		$time->teacher_id = $teacherinfos->id;
-		$time->MondayStart = Input::get('MondayStart');
-		$time->MondayEnd = Input::get('MondayEnd');
+		$time->Day = Input::get('Day');
+		$time->Start = Input::get('Start');
+		$time->End = Input::get('End');
+        if (Auth::user()->Teacher == 1) {
+            $time->teacher_id = Auth::user()->id;
+        }
+        else {
+            $time->teacher_id = Session::get('teacherID');
+        }
+        
 		try {
-			$time->save();
+            if ($id == null) { // NEW ENTRY
+                $time->save();
+            }
+            else 
+            {   // UPDATE
+                DB::table('times')
+                ->where('id', $id)
+                ->update(array(
+                    'Day' => $time->Day,
+                    'Start' => $time->Start,
+                    'End' => $time->End));
+            }
 		}
 		catch (Exception $e) {
 			return Redirect::to('/time/create')
+                ->withInput()
 //				->with('flash_message', 'Entering available times failed; please try again.');
 				->with('flash_message', $e->getMessage());
         }
@@ -157,7 +200,17 @@ class TimeController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+        try {
+            $usertime = Time::where('id','=', $id)
+            ->first();
+        }
+        catch(exception $e) {
+            return Redirect::intended()
+                ->with('flash_message', $e->getMessage());
+        }
+        
+        return View::make('time_edit')
+    		->with('usertime', $usertime);
 	}
 
 
@@ -172,7 +225,6 @@ class TimeController extends \BaseController {
 		//
 	}
 
-
 	/**
 	 * Remove the specified resource from storage.
 	 *
@@ -181,8 +233,15 @@ class TimeController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
-	}
-
-
+		try {
+            DB::table('times')
+                ->where('id', $id)
+                ->delete();
+        }
+	    catch(exception $e) {
+	        return Redirect::to('/time/create')->with('flash_message', 'Could not delete time schedule.');
+	    }
+        
+	   return Redirect::to('/time/create')->with('flash_message', 'Time schedule deleted.');
+    }
 }

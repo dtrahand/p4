@@ -30,6 +30,8 @@
 		<div class='flash-message'> {{ Session::get('flash_message') }}</div>
 	@endif
     
+	@yield('h1-title')
+	@yield('InfoForStudent')
 	@yield('content')
 
 	@yield('body')

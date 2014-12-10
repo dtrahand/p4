@@ -39,7 +39,10 @@ Route::get('/liststudents', ['before' => 'auth', 'uses' => 'UserController@getLi
 * (Implicit RESTful Routing)
 */
 Route::resource('time', 'TimeController');
-Route::post('/time/create', 'TimeController@store');
+Route::post('/time/create/{id?}', 'TimeController@store');
+Route::get('/time/edit/{id}', 'TimeController@edit');
+Route::post('/time/edit/{id}', 'TimeController@store');
+Route::post('/time/destroy/{id}', 'TimeController@destroy');
 
 /**
 * Debug

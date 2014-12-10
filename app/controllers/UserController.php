@@ -89,18 +89,24 @@ class UserController extends BaseController {
 	public function getLogout() {
 		# Log out
 		Auth::logout();
-		# Send them to the homepage
+        
+		# Remove All Items From The Session
+        Session::flush();
+		
+        # Send them to the homepage
 		return Redirect::to('/');
 	}
 
     # View list of students
 	public function getListstudents() {
         $liststudents= User::where('teacher','=','0')
-            ->get(array('firstname', 'lastname'));
+            ->get(array('id', 'firstname', 'lastname'));
+        
+        $listtimes= Time::all();
 
         return View::make('user_liststudents')
-            ->with('liststudents', $liststudents);
-
+            ->with('liststudents', $liststudents)
+            ->with('listtimes', $listtimes);
 	}
     
     

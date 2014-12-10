@@ -5,55 +5,30 @@
 @stop
 
 @section('h1-title')
-    <h1>Manage available days and times</h1>
+    <h1>Change available days and times</h1>
 @stop
 
 @section('content')
 
 @foreach($errors->all() as $message)
-    <div class='flash-message'>{{ $message }}</div>
+	<div class='error'>{{ $message }}</div>
 @endforeach
 
-<div  class="box">
-    @if (Auth::user()->Teacher == 0)
-        @section('InfoForStudent')
-            <!-- Name of the teacher: -->
-            @foreach($teacherinfos as $teacherinfo)
-                {{ "Teacher&apos;s name: ", $teacherinfo->firstname, " ", $teacherinfo->lastname }} <br>
-            @endforeach
-
-            <!-- Teacher available times: -->
-        Teacher&apos;available times:<br>
-            @foreach($teachertimes as $teachertime)
-                {{  "&nbsp;&nbsp;&nbsp;&nbsp;", $teachertime->Day, " ", $teachertime->Start, " ", $teachertime->End }} <br>
-            @endforeach
-        @stop
-    @endif
-
-        <!-- User times which have been previously recorded: -->
-        <br>Your recorded schedule: <br>
-        @foreach($usertimes as $usertime)
-            {{ "&nbsp;&nbsp;&nbsp;&nbsp;", $usertime->Day, " ", $usertime->Start, " ", $usertime->End, "&nbsp;" }} 
-            <a href='/time/edit/{{$usertime['id']}}'>Edit</a> <br>
-        @endforeach
-</div>
-
-<h2>Schedule:<h2>
 <table>
 <tbody>
-  <tr>
-      {{  Form::open(array(
-            'method' => 'post', 
-            'action' => array('TimeController@store'))) }}
-
-      <td class="box">
-        {{ Form::label('Day') }}
+    <tr>
+    {{ Form::open(array(
+            'method'=>'POST', 
+            'url' => array('/time/edit', $usertime->id) )) }}
+        
+    <td class="box">
+        {{ Form::label('Day - ') }}
+        {{$usertime->Day}}
         <select name="Day" class="form-control input-lg" value="">
         <option value=''>  </option>
         <option value='Monday'> Monday </option>
         <option value='Tuesday'> Tuesday </option>
         <option value='Wednesday'> Wednesday </option>
-<!--        <option selected value='Wednesday'> Wednesday </option>-->
         <option value='Thursday'> Thursday </option>
         <option value='Friday'> Friday </option>
         <option value='Saturday'> Saturday </option>
@@ -61,7 +36,8 @@
         </select>
     </td>
     <td class="box">
-        {{ Form::label('Start') }}
+        {{ Form::label('Start - ') }}
+        {{$usertime->Start}}
         <select name="Start" class="form-control input-lg" value="">
         <option value=''>  </option>
         <option value='08:00'> 08:00 </option>
@@ -76,7 +52,8 @@
         </select>
     </td> 
     <td class="box">
-        {{ Form::label('End ') }} 
+        {{ Form::label('End  - ') }} 
+        {{$usertime->End}}
         <select name="End" class="form-control input-lg">
         <option value=''>  </option>
         <option value='09:00'> 09:00 </option>
@@ -94,7 +71,22 @@
 </tbody>
 </table>
 <br> {{ Form::submit('Submit available day and time') }}
-
 {{ Form::close() }}
+
+<p></p>
+
+<div>
+    <!-- ---- DELETE ----- -->
+    {{ Form::open(array(
+        'url' => array('/time/destroy', $usertime->id) )) }}
+
+<!--
+    {{ Form::open(array('url' => '/time/destroy')) }}
+        {{ Form::hidden('id',$usertime['id']); }}
+        <button onClick='parentNode.submit();return false;'>Delete</button>
+-->
+    {{ Form::submit('Delete') }}
+    {{ Form::close() }}
+</div>
 
 @stop
