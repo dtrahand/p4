@@ -32,8 +32,6 @@ Route::post('/login', ['before' => 'csrf', 'uses' => 'UserController@postLogin']
 Route::get('/logout', ['before' => 'auth', 'uses' => 'UserController@getLogout'] );
 Route::post('/logout', ['before' => 'auth', 'uses' => 'UserController@postLogout'] );
 
-Route::get('/liststudents', ['before' => 'auth', 'uses' => 'UserController@getListstudents'] );
-
 /**
 * Availabletime
 * (Implicit RESTful Routing)
@@ -42,7 +40,21 @@ Route::resource('time', 'TimeController');
 Route::post('/time/create/{id?}', 'TimeController@store');
 Route::get('/time/edit/{id}', 'TimeController@edit');
 Route::post('/time/edit/{id}', 'TimeController@store');
-Route::post('/time/destroy/{id}', 'TimeController@destroy');
+Route::get('/time/destroy/{id}', 'TimeController@destroy');
+
+Route::get('/test', function() {
+    return View::make('test');
+});
+
+/**
+* Student grades
+* (Implicit RESTful Routing)
+*/
+Route::resource('grade', 'GradeController');
+Route::post('/grade/create/{id?}', 'GradeController@store');
+Route::get('/grade/edit/{id}', 'GradeController@edit');
+Route::post('/grade/edit/{id}', 'GradeController@store');
+Route::get('/grade/destroy/{id}', 'GradeController@destroy');
 
 /**
 * Debug

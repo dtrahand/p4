@@ -33,8 +33,8 @@
         <!-- User times which have been previously recorded: -->
         <br>Your recorded schedule: <br>
         @foreach($usertimes as $usertime)
-            {{ "&nbsp;&nbsp;&nbsp;&nbsp;", $usertime->Day, " ", $usertime->Start, " ", $usertime->End, "&nbsp;" }} 
-            <a href='/time/edit/{{$usertime['id']}}'>Edit</a> <br>
+            {{ "&nbsp;&nbsp;&nbsp;&nbsp;", $usertime->Day, " from ", date('H:i', strtotime($usertime->Start)), " to ", date('H:i', strtotime($usertime->End)), "&nbsp;" }} 
+            <a href='/time/edit/{{$usertime['id']}}'>Edit</a><a href='/time/destroy/{{$usertime['id']}}'> Delete</a> <br>
         @endforeach
 </div>
 

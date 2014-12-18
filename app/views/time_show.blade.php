@@ -12,13 +12,15 @@
     <ul>
         <!-- For each students-->
         @foreach($liststudents as $liststudent)
-            <li>{{ $liststudent->firstname, " ", $liststudent->lastname, ":" }}</li>
+        <h4>{{ $liststudent->firstname, " ", $liststudent->lastname, ":" }} </h4>
+        
             <!-- Find the student's hours -->
             @foreach($listtimes as $listtime)
                 @if ($liststudent->id == $listtime->user_id)
-                    <li>{{ "&nbsp;&nbsp;&nbsp;&nbsp;", $listtime->Day, ": from ", $listtime->Start, " to ", $listtime->End }}</li>
+                    <li>{{ "&nbsp;&nbsp;&nbsp;&nbsp;", $listtime->Day, ": from ", date('H:i', strtotime($listtime->Start)), " to ", date('H:i', strtotime($listtime->End)) }}</li>
                 @endif
             @endforeach
+        <br>
         @endforeach
     </ul>
 </p>

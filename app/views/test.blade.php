@@ -14,7 +14,13 @@
 	<div class='error'>{{ $message }}</div>
 @endforeach
 
-{{"id = ", $id}}
+{{print_r(Auth::user());}}
+<br><br>{{print_r(Auth::user()->Teacher);}}
 
+@if(Auth::user()->Teacher == 0)
+{{" teacher = 0"}}
+@else
+{{" teacher = 1"}}
+@endif
 
 @stop

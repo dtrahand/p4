@@ -15,7 +15,7 @@ class UserTimeTableSeeder extends Seeder {
 		$laura->email = 'laura@gmail.com';
 		$laura->Firstname = 'Laura';
 		$laura->Lastname = 'Villa';
-		$laura->password = Hash::make('piano');
+		$laura->password = Hash::make('pianos');
 		$laura->Teacher = '1';
 		$laura->save();
 
@@ -25,7 +25,7 @@ class UserTimeTableSeeder extends Seeder {
 		$peter->email = 'peter@gmail.com';
 		$peter->Firstname = 'Peter';
 		$peter->Lastname = 'Brown';
-		$peter->password = Hash::make('piano');
+		$peter->password = Hash::make('pianos');
 		$peter->Teacher = '0';
 		$peter->save();
         
@@ -35,7 +35,7 @@ class UserTimeTableSeeder extends Seeder {
 		$lucie->email = 'lucie@gmail.com';
 		$lucie->Firstname = 'Lucie';
 		$lucie->Lastname = 'Dupont';
-		$lucie->password = Hash::make('piano');
+		$lucie->password = Hash::make('pianos');
 		$lucie->Teacher = '0';
 		$lucie->save();
 
@@ -44,8 +44,8 @@ class UserTimeTableSeeder extends Seeder {
 		$vicky->id = '4';
 		$vicky->email = 'vicky@gmail.com';
 		$vicky->Firstname = 'Vicky';
-		$vicky->Lastname = 'Dupont';
-		$vicky->password = Hash::make('piano');
+		$vicky->Lastname = 'Barnes';
+		$vicky->password = Hash::make('pianos');
 		$vicky->Teacher = '0';
 		$vicky->save();
 
@@ -118,6 +118,35 @@ class UserTimeTableSeeder extends Seeder {
 		$timestudent7->teacher_id = '1';
 		$timestudent7->Day = 'Wednesday';
 		$timestudent7->Start = '13:00:00';
+		$timestudent7->End = '16:00:00';
+		$timestudent7->save();
+        
+        # Times for User3 - ID = 4
+        ##########################
+        $timestudent5 = new Time;
+		$timestudent5->id = '8';
+		$timestudent5->user_id = '4';
+		$timestudent5->teacher_id = '1';
+		$timestudent5->Day = 'Tuesday';
+		$timestudent5->Start = '10:00:00';
+		$timestudent5->End = '12:00:00';
+        $timestudent5->save();
+        
+        $timestudent6 = new Time;
+		$timestudent6->id = '9';
+		$timestudent6->user_id = '4';
+		$timestudent6->teacher_id = '1';
+		$timestudent6->Day = 'Wednesday';
+		$timestudent6->Start = '10:00:00';
+		$timestudent6->End = '13:00:00';
+		$timestudent6->save();
+        
+        $timestudent7 = new Time;
+		$timestudent7->id = '10';
+		$timestudent7->user_id = '4';
+		$timestudent7->teacher_id = '1';
+		$timestudent7->Day = 'Wednesday';
+		$timestudent7->Start = '15:00:00';
 		$timestudent7->End = '16:00:00';
 		$timestudent7->save();
 	}

@@ -97,13 +97,12 @@ class TimeController extends \BaseController {
        }
 
 	/**
-	 * Store a newly created resource in storage.
-	 * @return Response POST create
+	 * Store a newly created time in storage.
+	 * Update a modified time
+	 * @return Response POST create or POST edit
 	 */
 	public function store($id = null)
 	{
-
-
 		# Step 1) Define the rules
 		$rules = array(
 			'Day' => 'required',
@@ -157,12 +156,13 @@ class TimeController extends \BaseController {
             $time->teacher_id = Session::get('teacherID');
         }
         
+        # INSERT OR UPDATE DATABASE    
 		try {
-            if ($id == null) { // NEW ENTRY
+            if ($id == null) {  // THIS IS A NEW ENTRY
                 $time->save();
             }
             else 
-            {   // UPDATE
+            {                   // THIS IS AN UPDATE
                 DB::table('times')
                 ->where('id', $id)
                 ->update(array(
@@ -189,7 +189,27 @@ class TimeController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+    # View list of students
+        try {
+        $liststudents= User::where('teacher','=','0')
+            ->get(array('id', 'firstname', 'lastname'));
+        }
+        catch(exception $e) {
+            return Redirect::intended()
+                ->with('flash_message', $e->getMessage());
+        }
+        
+        try {
+            $listtimes= Time::all();
+        }
+        catch(exception $e) {
+            return Redirect::intended()
+                ->with('flash_message', $e->getMessage());
+        }
+
+        return View::make('time_show')
+            ->with('liststudents', $liststudents)
+            ->with('listtimes', $listtimes);
 	}
 
 
@@ -239,9 +259,11 @@ class TimeController extends \BaseController {
                 ->delete();
         }
 	    catch(exception $e) {
-	        return Redirect::to('/time/create')->with('flash_message', 'Could not delete time schedule.');
+            return Redirect::intended()
+                ->with('flash_message', 'Could not delete time schedule.');
 	    }
         
-	   return Redirect::to('/time/create')->with('flash_message', 'Time schedule deleted.');
+        return Redirect::intended()
+           ->with('flash_message', 'Time schedule deleted.');
     }
 }

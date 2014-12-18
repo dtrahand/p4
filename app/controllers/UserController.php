@@ -95,19 +95,6 @@ class UserController extends BaseController {
 		
         # Send them to the homepage
 		return Redirect::to('/');
-	}
-
-    # View list of students
-	public function getListstudents() {
-        $liststudents= User::where('teacher','=','0')
-            ->get(array('id', 'firstname', 'lastname'));
-        
-        $listtimes= Time::all();
-
-        return View::make('user_liststudents')
-            ->with('liststudents', $liststudents)
-            ->with('listtimes', $listtimes);
-	}
-    
+	}    
     
 }

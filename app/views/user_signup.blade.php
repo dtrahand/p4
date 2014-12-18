@@ -9,7 +9,7 @@
 To create an account, please fill in all the fields.
 
 @foreach($errors->all() as $message)
-	<div class='error'>{{ $message }}</div>
+	<div class='flash-message'>{{ $message }}</div>
 @endforeach
 
 {{ Form::open(array('url' => '/signup')) }}

@@ -25,7 +25,7 @@ body {
 table {
     text-align: center;
     border-spacing: 5px;
-    width:70%;
+    width:auto;
     align:center;
     cellspacing: 55px;
     border-spacing: 10px;
@@ -46,6 +46,14 @@ td.box {
     padding: 10px;
     border-radius: 6px;
     margin: 5 5px;
+}
+table.box {
+    width: auto;
+    border: solid;
+    border-width: 2px;
+    border-color: #00BFFF;
+    padding: 5px;
+    border-radius: 6px;
 }
 
 .welcome {

@@ -78,14 +78,9 @@
 <div>
     <!-- ---- DELETE ----- -->
     {{ Form::open(array(
-        'url' => array('/time/destroy', $usertime->id) )) }}
-
-<!--
-    {{ Form::open(array('url' => '/time/destroy')) }}
-        {{ Form::hidden('id',$usertime['id']); }}
-        <button onClick='parentNode.submit();return false;'>Delete</button>
--->
-    {{ Form::submit('Delete') }}
+        'url' => array('/time/destroy', $usertime->id),
+        'method' => 'GET')) }}
+        {{ Form::submit('Delete') }}
     {{ Form::close() }}
 </div>
 
