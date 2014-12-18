@@ -12,7 +12,7 @@ see [Project 4 live URL](http://p4.delphinetrahand.me/)
 
 ----
 ## Demo information: 
-    Jing screencast demo link: http://screencast.com/t/TiyCvNEsK9R
+[Jing screencast demo link: ](http://screencast.com/t/kM5I84XC)
     
 ----
 ## Any details the instructor or TA needs to know:
@@ -22,6 +22,7 @@ The **users** from the seeder are the following :
 * peter@gmail.com (student)
 * lucie@gmail.com (student)
 * vicky@gmail.com (student)
+
 Password is the same for all: "pianos"
 
 **Libraries:** Bootstrap 
