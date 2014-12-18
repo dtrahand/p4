@@ -38,7 +38,7 @@
         @endforeach
 </div>
 
-<h2>Schedule:<h2>
+<h2>Add a schedule when you would be free for a piano lesson:<h2>
 <table>
 <tbody>
   <tr>

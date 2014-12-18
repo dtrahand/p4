@@ -58,10 +58,6 @@
                 <tr> 
                     <td> {{ $listgrade->date }} </td>
                     <td> {{ $listgrade->grade, " %" }} </td>
-                    <td>
-                        <a href='/grade/edit/{{$listgrade->id }}'>Edit</a>
-                        <a href='/grade/destroy/{{$listgrade->id }}'>   Delete</a> <br>
-                    </td>             
                 </tr>
             @endforeach
         </table>
